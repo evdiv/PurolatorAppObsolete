@@ -1,7 +1,10 @@
 <?php 
 
+namespace Purolator;
 
 class Shipment {
+
+	private $db;
 
 	private $incomingData;
 	private $client;
@@ -14,6 +17,8 @@ class Shipment {
 
 
 	public function __construct($incomingData = '') {
+
+		$this->db = new Database();
 
 		$this->incomingData = $incomingData;
 		$this->client = $this->createPWSSOAPClient();
@@ -59,11 +64,11 @@ class Shipment {
 		$counter = 0;
 		foreach ($this->pins as $pin) {
 
-			$packageSQL = '';
-
 			if(empty($pin)) {
 				continue;
 			}
+
+			$packageSQL = '';
 
 			if(!empty($this->incomingData['packages'][$counter])) {
 				$packageSQL = " Length = " . $this->incomingData['packages'][$counter]['length'] . ", ";
@@ -74,19 +79,19 @@ class Shipment {
 				$packageSQL .= " Note = '" . $this->incomingData['packages'][$counter]['note'] . "', ";				
 			}
 
-			mysql_query("INSERT INTO TrackingInfo SET 
-				OrderID = '" . $orderID . "', 
-				TrackingCarrierID = 2, 
-				TrackingCode = '" . $pin . "', 
-				LocationCode = '" . $locationCode . "',  
-				AdminID = " . $adminID . ", 
-				" . $packageSQL . "
-				CourierService = '" . $serviceID . "'");
+			$this->db->query("INSERT INTO TrackingInfo SET 
+								OrderID = '" . $orderID . "', 
+								TrackingCarrierID = 2, 
+								TrackingCode = '" . $pin . "', 
+								LocationCode = '" . $locationCode . "',  
+								AdminID = " . $adminID . ", 
+								" . $packageSQL . "
+								CourierService = '" . $serviceID . "'");
 		
 			$counter++;
 		}
 
-    	mysql_query("INSERT INTO OrdersNotes (AdminID, OrderID, Note, NoteDate)
+    	$this->db->query("INSERT INTO OrdersNotes (AdminID, OrderID, Note, NoteDate)
             VALUES ({$adminID}, {$orderID}, 'Shipment created', Now())"); 
 	}
 
@@ -138,7 +143,7 @@ class Shipment {
 		$shipperLocationSQL = !empty($shipperLocationID) ? " AND l.LocationsID = " . $shipperLocationID . " " : "";
 
 
-		$result = mysql_query("SELECT t.*, l.LocationsID FROM TrackingInfo AS t, Locations AS l 
+		$result = $this->db->query("SELECT t.*, l.LocationsID FROM TrackingInfo AS t, Locations AS l 
 								WHERE t.LocationCode = l.LocationCode
 								" . $shipperLocationSQL . "
 								AND t.TrackingCarrierID = 2
@@ -146,7 +151,7 @@ class Shipment {
 								ORDER BY t.OrderID DESC, t.TrackingCode");
 
 		if($result) {
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $result->fetch_assoc()) {
 
 				$shipments[] = array(
 
@@ -178,18 +183,18 @@ class Shipment {
 			$this->errors[] = "'Purolator PIN can not be empty'";
 		}
 
-		$result = mysql_query("SELECT t.*, a.Username, l.ActualCityName, l.SteetAddress, l.PostalCode, l.LocationsID  
-							FROM TrackingInfo AS t
-							LEFT JOIN Admin AS a
-							ON t.AdminID = a.AdminID
-							LEFT JOIN Locations AS l
-							ON t.LocationCode = l.LocationCode
+		$result = $this->db->query("SELECT t.*, a.Username, l.ActualCityName, l.SteetAddress, l.PostalCode, l.LocationsID  
+									FROM TrackingInfo AS t
+									LEFT JOIN Admin AS a
+									ON t.AdminID = a.AdminID
+									LEFT JOIN Locations AS l
+									ON t.LocationCode = l.LocationCode
 							
-							WHERE t.TrackingCode =  '" . $pin . "'
-							LIMIT 1");
+									WHERE t.TrackingCode =  '" . $pin . "'
+									LIMIT 1");
 
 		if($result) {
-			$row = mysql_fetch_assoc($result);
+			$row = $result->fetch_assoc();
 
 			$shipment['date'] = $row['DateAdded'];
 			$shipment['orderId'] = $row['OrderID'];
@@ -214,7 +219,7 @@ class Shipment {
 	public function getPackagesByOrderId($id) {
 		$packages = array();
 
-		$result = mysql_query("SELECT t.Length, t.Width, t.Height, t.Weight, t.Reference, t.Note
+		$result = $this->db->query("SELECT t.Length, t.Width, t.Height, t.Weight, t.Reference, t.Note
 								FROM TrackingInfo AS t
 								WHERE t.TrackingCarrierID = 2 
 								AND t.Length IS NOT NULL 
@@ -224,7 +229,7 @@ class Shipment {
 								AND t.OrderID = '" . $id ."'");
 
 		if($result) {
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $result->fetch_assoc()) {
 
 				$packages[] = array(
 					'length' => $row['Length'],
@@ -245,10 +250,10 @@ class Shipment {
 	public function getShippingBoxes() {
 		$boxes = array();
 
-		$result = mysql_query("SELECT * FROM ProductsBoxes");
+		$result = $this->db->query("SELECT * FROM ProductsBoxes");
 
 		if($result) {
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $result->fetch_assoc()) {
 				$boxes[] = array(
 					'id' => $row['ProductsBoxesID'],
 					'description' => $row['Description'],
@@ -349,7 +354,7 @@ class Shipment {
 			return;
 		}
 
-		mysql_query("UPDATE TrackingInfo SET  Void = 1 WHERE TrackingCode = '" . $this->incomingData['pin'] . "' LIMIT 1");
+		$this->db->query("UPDATE TrackingInfo SET  Void = 1 WHERE TrackingCode = '" . $this->incomingData['pin'] . "' LIMIT 1");
 	}
 
 

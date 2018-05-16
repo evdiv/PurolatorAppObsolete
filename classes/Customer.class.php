@@ -4,12 +4,18 @@ namespace Purolator;
 
 class Customer {
 
+	private $db;
+
+    public function __construct() {
+		$this->db = new Database();
+    }
+
 
 	public function getByOrderId($id) {
 
 		$customer = array();
 
-		$result = $mysqli->query("SELECT a.AccountsID, p.ProductName, sc.Qty, sc.ShippingInsurance, a.Email, a.HomePhone, 
+		$result = $this->db->query("SELECT a.AccountsID, p.ProductName, sc.Qty, sc.ShippingInsurance, a.Email, a.HomePhone, 
 									a.PostalCode, a.HomeCity, a.AptUnitl, a.HomeAddress, o.OrdersID, sc.ProductPrice, 
 									p.ProductPrice As ActualPrice, p.ProductsID, a.ProvincesID, a.FirstName, a.LastName, 
 									o.ShippingName, o.CourierSelected, o.CourierService

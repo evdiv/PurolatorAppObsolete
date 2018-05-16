@@ -1,5 +1,7 @@
 <?php 
 
+namespace Purolator;
+
 class Estimate {
 
 	private $incomingData;
@@ -223,8 +225,4 @@ class Estimate {
 
 		return count($this->services);
 	}
-
-
-
-
 }

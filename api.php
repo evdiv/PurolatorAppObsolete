@@ -66,7 +66,7 @@ if($jsonData['action'] == "getLocations") {
 
 } elseif($jsonData['action'] == "getPackagesByOrderId") {
 
-	$packages = (new Shipment())->getPackagesByOrderId($jsonData['orderID']);
+	$packages = (new Purolator\Shipment())->getPackagesByOrderId($jsonData['orderID']);
     echo json_encode(array('packages' => $packages));
    	exit;
 
@@ -79,9 +79,8 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "getAvalableServices") {
 
 
-	$Estimate = new Estimate($jsonData);
+	$Estimate = new Purolator\Estimate($jsonData);
 	$Estimate->get();
-
 
 	echo json_encode(array(
 						'services' => $Estimate->services, 
@@ -96,9 +95,7 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "getShippingBoxes") {
 
 
-	$Shipment = new Shipment($jsonData);
-	$Shipment->getShippingBoxes();
-
+	$Shipment = new Purolator\Shipment($jsonData);
 
 	echo json_encode(array(
 						'boxes' => $Shipment->getShippingBoxes(), 
@@ -116,7 +113,7 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "createShipment") {
 
 
-	$Shipment = new Shipment($jsonData);
+	$Shipment = new Purolator\Shipment($jsonData);
 	$Shipment->create();
 	$Shipment->store();
 
@@ -139,7 +136,7 @@ if($jsonData['action'] == "getLocations") {
 		exit;
 	}
 
-	$Shipment = new Shipment($jsonData);
+	$Shipment = new Purolator\Shipment($jsonData);
 	$Shipment->void();
 
 	echo json_encode(array(
@@ -156,7 +153,7 @@ if($jsonData['action'] == "getLocations") {
 
 } elseif($jsonData['action'] == "printLabel") {
 
-	$Document = new Document($jsonData);
+	$Document = new Purolator\Document($jsonData);
 	$Document->getLabel(); 
 
 	echo json_encode(array(
@@ -186,11 +183,11 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "getManifest") {
 
 	//Consolidation should be used as an end of day process
-	$Shipment = new Shipment($jsonData);
+	$Shipment = new Purolator\Shipment($jsonData);
 	$Shipment->consolidate();
 
 	//Once consolidation completed, the manifest can be produced
-	$Document = new Document($jsonData);
+	$Document = new Purolator\Document($jsonData);
 	$Document->getManifest(); 
 
 
@@ -210,7 +207,7 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "createReturnShipment") {	
 
 
-	$ReturnShipment = new ReturnShipment($jsonData);
+	$ReturnShipment = new Purolator\ReturnShipment($jsonData);
 	$ReturnShipment->create();
 	$ReturnShipment->store();
 	
@@ -230,7 +227,7 @@ if($jsonData['action'] == "getLocations") {
 } elseif($jsonData['action'] == "getShipmentsByDate") {
 
 	$date = (empty($jsonData['date']) || $jsonData['date'] === "Invalid date") ? date('Y-m-d') : $jsonData['date'];
-	$Shipment = new Shipment();
+	$Shipment = new Purolator\Shipment();
 
 	echo json_encode(array(
 						'shipments' => $Shipment->getByDate($date), 
@@ -247,7 +244,7 @@ if($jsonData['action'] == "getLocations") {
 
 } elseif($jsonData['action'] == "getShipmentDetails") {
 
-	$Shipment = new Shipment();
+	$Shipment = new Purolator\Shipment();
 
 	echo json_encode(array(
 						'shipment' => $Shipment->getByTrackingNumber($jsonData['pin']), 

@@ -1,18 +1,23 @@
 <?php 
 
+namespace Purolator;
+
 class ReturnShipment {
+
+    private $db;
 
     private $incomingData;
     private $client; 
     private $request;
     public $response;  
 
-
     public $errors = array();
     public $pins = array();
 
 
     public function __construct($incomingData = '') {
+
+        $this->db = new Database();
 
         $this->incomingData = $incomingData;
         $this->client = $this->createPWSSOAPClient(); 
@@ -41,11 +46,11 @@ class ReturnShipment {
         $counter = 0;
         foreach ($this->pins as $pin) {
 
-            $packageSQL = '';
-
             if(empty($pin)) {
                 continue;
             }
+
+            $packageSQL = '';
 
             if(!empty($this->incomingData['packages'][$counter])) {
                 $packageSQL = " Length = " . $this->incomingData['packages'][$counter]['length'] . ", ";
@@ -57,14 +62,14 @@ class ReturnShipment {
             }
 
 
-            mysql_query("INSERT INTO TrackingReturnsInfo SET 
-                OrderID = '" . $orderID . "', 
-                TrackingCarrierID = 2, 
-                TrackingCode = '" . $pin . "', 
-                LocationCode = '" . $locationCode . "',  
-                AdminID = " . $adminID . ", 
-                " . $packageSQL . "
-                CourierService = '" . $serviceID . "'");
+            $this->db->query("INSERT INTO TrackingReturnsInfo SET 
+                                OrderID = '" . $orderID . "', 
+                                TrackingCarrierID = 2, 
+                                TrackingCode = '" . $pin . "', 
+                                LocationCode = '" . $locationCode . "',  
+                                AdminID = " . $adminID . ", 
+                                " . $packageSQL . "
+                                CourierService = '" . $serviceID . "'");
             
             $counter++;
         }
@@ -72,11 +77,11 @@ class ReturnShipment {
 
         $shipmentNote = "Return shipment created. <a href=\'/purolator/labels/" . $this->pins[0] . ".pdf\' target=\'_blank\'>Download label</a>. ";
 
-        mysql_query("INSERT INTO OrdersNotes SET 
-                AdminID = " . $adminID . ", 
-                OrderID = '" . $orderID . "', 
-                Note = '" . $shipmentNote . "',
-                NoteDate = Now()");
+        $this->db->query("INSERT INTO OrdersNotes SET 
+                            AdminID = " . $adminID . ", 
+                            OrderID = '" . $orderID . "', 
+                            Note = '" . $shipmentNote . "',
+                            NoteDate = Now()");
     }
 
 
@@ -95,11 +100,11 @@ class ReturnShipment {
 	  	$headers[] = new SoapHeader ( 'http://purolator.com/pws/datatypes/v2',
 	        'RequestContext', 
                 array (
-                        'Version'           =>  '2.0',
-                        'Language'          =>  'en',
-                        'GroupID'           =>  'xxx',
-                        'RequestReference'  =>  'LM Return Shipment' 
-                    )
+                    'Version'           =>  '2.0',
+                    'Language'          =>  'en',
+                    'GroupID'           =>  'xxx',
+                    'RequestReference'  =>  'LM Return Shipment' 
+                )
             ); 
 
 

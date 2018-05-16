@@ -4,11 +4,13 @@ namespace Purolator;
 
 class Origin {
 
+	private $db;
     private $incomingData;
 
 
     public function __construct($incomingData = '') {
 
+		$this->db = new Database();
         $this->incomingData = $incomingData;
     }
 
@@ -18,15 +20,14 @@ class Origin {
 
 		$locations = array();
 
-		$result = mysql_query("SELECT l.LocationsID, l.City, p.ProvinceName 
-						FROM Locations AS l, Provinces AS p 
-						WHERE l.ProvincesID = p.ProvincesID
-						ORDER BY l.City");
+		$result = $this->db->query("SELECT l.LocationsID, l.City, p.ProvinceName 
+									FROM Locations AS l, Provinces AS p 
+									WHERE l.ProvincesID = p.ProvincesID
+									ORDER BY l.City");
 		if($result) {
-			while($row = mysql_fetch_assoc($result)) {
+			while($row = $result->fetch_assoc()) { 
 
 				$locations[] = array(
-
 					'Id' => $row['LocationsID'],
 					'city' => utf8_encode($row['City']),
 					'province' => utf8_encode($row['ProvinceName'])
@@ -44,14 +45,14 @@ class Origin {
 
 		$location = array();
 
-		$result = mysql_query("SELECT l.*, p.ProvinceName, p.ProvinceCode 
-								FROM Locations AS l, Provinces AS p
-								WHERE l.ProvincesID = p.ProvincesID
-								AND l.LocationsID = " . $id . "
-								LIMIT 1");
+		$result = $this->db->query("SELECT l.*, p.ProvinceName, p.ProvinceCode 
+									FROM Locations AS l, Provinces AS p
+									WHERE l.ProvincesID = p.ProvincesID
+									AND l.LocationsID = " . $id . "
+									LIMIT 1");
 
 		if($result) {
-			$row = mysql_fetch_array($result);
+			$row = $relult->fetch_assoc($result);
 
 			$location['Id'] = $row['LocationsID'];
 			$location['Name'] = COMPANY_NAME;
@@ -81,16 +82,16 @@ class Origin {
 
 		$location = array();
 
-		$result = mysql_query("SELECT l.*, p.ProvinceName, p.ProvinceCode 
-								FROM Locations AS l, Provinces AS p, TrackingInfo AS t
-								WHERE l.ProvincesID = p.ProvincesID
-								AND t.TrackingCarrierID = 2 
-								AND l.LocationCode = t.LocationCode
-								AND t.OrderID = " . $id . "
-								LIMIT 1");
+		$result = $this->db->query("SELECT l.*, p.ProvinceName, p.ProvinceCode 
+									FROM Locations AS l, Provinces AS p, TrackingInfo AS t
+									WHERE l.ProvincesID = p.ProvincesID
+									AND t.TrackingCarrierID = 2 
+									AND l.LocationCode = t.LocationCode
+									AND t.OrderID = " . $id . "
+									LIMIT 1");
 
 		if($result) {
-			$row = mysql_fetch_array($result);
+			$row = $result->fetch_assoc($result);
 
 			$location['Id'] = $row['LocationsID'];
 			$location['Name'] = COMPANY_NAME;

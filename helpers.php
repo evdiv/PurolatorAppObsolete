@@ -5,6 +5,14 @@ require_once "/home/sites/landm/html/functions/_settings.php";
 
 //Functions ////////////////////////////////////////////////////
 
+function redirectIfGuest() {
+	// if(empty($_SESSION['AdminID'])) {
+	// 	header("location: /index.php?msg=timeout");
+	// 	exit;
+	// } 
+}
+
+
 function ForceIncomingString($name, $default = "") {
 
 	$value = !empty($_GET[$name]) ? $_GET[$name] : $default;
@@ -109,9 +117,11 @@ function getAdminLocationID($locationID = 0) {
 		return $locationID;
 	}
 
-	$result = mysql_query("SELECT LocationsID FROM Admin WHERE AdminID = " . $_SESSION['AdminID']);
+	$db = new Database();
+
+	$result = $db->query("SELECT LocationsID FROM Admin WHERE AdminID = " . $_SESSION['AdminID']);
 	if($result) {
-		$row = mysql_fetch_assoc($result);
+		$row = $result->fetch_assoc();
 		$locationID = $row['LocationsID'];
 	}
 
@@ -124,9 +134,11 @@ function getAdminLocationID($locationID = 0) {
 
 function getShipperLocationID($locationID = 0) {
 
-	$result = mysql_query("SELECT LocationsID FROM Admin WHERE ShippingAccess = 1 AND AdminID = " . $_SESSION['AdminID']);
+	$db = new Database();
+
+	$result = $db->query("SELECT LocationsID FROM Admin WHERE ShippingAccess = 1 AND AdminID = " . $_SESSION['AdminID']);
 	if($result) {
-		$row = mysql_fetch_assoc($result);
+		$row = $result->fetch_assoc();
 		$locationID = $row['LocationsID'];
 	}
 
@@ -139,12 +151,12 @@ function getShipperLocationID($locationID = 0) {
 
 
 function setShipmentVoidedInDB($ShipmentData) {
-
+	$db = new Database();
 	$pin = !empty($ShipmentData['pin']) ? $ShipmentData['pin'] : '';
 
 	if(!empty($pin)) {
 
-		mysql_query("UPDATE TrackingInfo SET  Void = 1 WHERE TrackingCode = '" . $pin . "' LIMIT 1");
+		$db->query("UPDATE TrackingInfo SET  Void = 1 WHERE TrackingCode = '" . $pin . "' LIMIT 1");
 	}
 }
 

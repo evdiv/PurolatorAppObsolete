@@ -41,7 +41,7 @@ define("APP_PUROLATOR_RETURN_SHIPMENT_URL", "https://webservices.purolator.com/E
 //****************************************
 // Require Classes and helper functions
 
-require_once "./db.php"; 
+require_once "./classes/Database.class.php";
 
 require_once "./classes/Estimate.class.php";
 require_once "./classes/Document.class.php";

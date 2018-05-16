@@ -1,12 +1,15 @@
 <?php 
 
+namespace Purolator;
+
 class Document {
+
+    private $db;
 
     private $incomingData;
     private $client;
     private $request;
     public $response;  
-
 
     public $errors = array();
     public $pdfUrl = '';   
@@ -17,6 +20,8 @@ class Document {
 
 
     public function __construct($incomingData = '') {
+
+        $this->db = new Database();
 
         $this->incomingData = $incomingData;
         $this->client = $this->createPWSSOAPClient();
