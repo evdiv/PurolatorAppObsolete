@@ -5,16 +5,16 @@
 
 //Define autoloader 
 function __autoload($className) { 
-	$filePath = './classes/' . $className . '.class.php';
 
-	require_once $filePath; 
+	$className = explode('\\', $className);
+	$filePath = './classes/' . end($className) . '.class.php';
 
-    // if (file_exists($filePath)) { 
-    //     require_once $filePath; 
-    //     return true; 
-    // } 
+    if (file_exists($filePath)) { 
+        require_once $filePath; 
+        return true; 
+    } 
 
-    // return false; 
+    return false; 
 } 
 
 
@@ -167,7 +167,7 @@ function getAdminLocationID($locationID = 0) {
 		return $locationID;
 	}
 
-	$db = new Database();
+	$db = new Purolator\Database();
 
 	$result = $db->query("SELECT LocationsID FROM Admin WHERE AdminID = " . $_SESSION['AdminID']);
 	if($result) {
@@ -184,7 +184,7 @@ function getAdminLocationID($locationID = 0) {
 
 function getShipperLocationID($locationID = 0) {
 
-	$db = new Database();
+	$db = new Purolator\Database();
 
 	$result = $db->query("SELECT LocationsID FROM Admin WHERE ShippingAccess = 1 AND AdminID = " . $_SESSION['AdminID']);
 	if($result) {
@@ -201,7 +201,8 @@ function getShipperLocationID($locationID = 0) {
 
 
 function setShipmentVoidedInDB($ShipmentData) {
-	$db = new Database();
+	$db = new Purolator\Database();
+	
 	$pin = !empty($ShipmentData['pin']) ? $ShipmentData['pin'] : '';
 
 	if(!empty($pin)) {

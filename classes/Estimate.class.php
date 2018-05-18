@@ -18,8 +18,8 @@ class Estimate {
 		$this->incomingData = $incomingData;
 		$this->client = $this->createPWSSOAPClient();
 
-		$this->request = new stdClass();
-		$this->response = new stdClass();
+		$this->request = new \stdClass();
+		$this->response = new \stdClass();
 	}
 
 
@@ -35,7 +35,7 @@ class Estimate {
 
 	private function createPWSSOAPClient() {
 
-  		$client = new SoapClient( "./wsdl/EstimatingService.wsdl", 
+  		$client = new \SoapClient( "./wsdl/EstimatingService.wsdl", 
   								array (
                                     'trace'		=>	true,
                                     'location'	=>	APP_PUROLATOR_ESTIMATING_URL,
@@ -45,7 +45,7 @@ class Estimate {
                                 )
                         	);
 
-	  	$headers[] = new SoapHeader ( 'http://purolator.com/pws/datatypes/v1', 
+	  	$headers[] = new \SoapHeader ( 'http://purolator.com/pws/datatypes/v1', 
 	                                'RequestContext', 
 	                                array (
                                         'Version'           =>  '1.4',

@@ -14,7 +14,7 @@ class Database {
 	private function connect() {
 		if (empty($this->dbconnect)) {
 
-			$mysql = new mysqli($this->host, $this->username, $this->password, $this->database);
+			$mysql = new \mysqli($this->host, $this->username, $this->password, $this->database);
 
 			if ($mysql->connect_errno) {
 				die($mysql->connect_error);

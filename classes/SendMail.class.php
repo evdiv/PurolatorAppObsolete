@@ -1,4 +1,6 @@
-<?
+<?php 
+
+namespace Purolator;
 
 class SendMail {
 

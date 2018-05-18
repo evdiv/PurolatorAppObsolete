@@ -2,15 +2,25 @@
 
 namespace Purolator;
 
-class Locations { // class
+class Locations { 
 
-    function GetProvinceCodeByAccountsID($AccountID) {
-        $result = mysql_query("SELECT p.ProvinceCode
-                                FROM Provinces p, Accounts a
-                                WHERE p.ProvincesID = a.ProvincesID
-                                AND a.AccountsID = " . $AccountID . "
-                                LIMIT 1");
-        $row = mysql_fetch_assoc($result);
+	private $db;
+
+
+	public function __construct() {
+
+		$this->db = new Database();
+	}
+
+
+    public function GetProvinceCodeByAccountsID($AccountID) {
+        $result = $this->db->query("SELECT p.ProvinceCode
+                                		FROM Provinces p, Accounts a
+                                		WHERE p.ProvincesID = a.ProvincesID
+                                		AND a.AccountsID = " . $AccountID . "
+                                		LIMIT 1");
+        $row = $result->fetch_assoc();
+        
         return $row['ProvinceCode'];
     }
 

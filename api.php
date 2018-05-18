@@ -217,14 +217,13 @@ if($jsonData['action'] == "getLocations") {
 
 
 
-
 //***************************************************
 // Get All Shipments by selected Date from DB
 
 } elseif($jsonData['action'] == "getShipmentsByDate" || getIncomingString('action') == 'getShipmentsByDate') {
 
 	$date = (empty($jsonData['date']) || $jsonData['date'] === "Invalid date") ? date('Y-m-d') : $jsonData['date'];
-	$Shipment = new Shipment();
+	$Shipment = new Purolator\Shipment();
 
 	echo json_encode(array(
 						'shipments' => $Shipment->getByDate($date), 
@@ -261,7 +260,7 @@ if($jsonData['action'] == "getLocations") {
 	}
 
 
-    $SendMail = new SendMail;
+    $SendMail = new Purolator\SendMail();
     $SendMail->SenderName  = COMPANY_NAME;
     $SendMail->SenderEmail = ADMIN_EMAIL;
     $SendMail->Subject = "Return Shipment Label - " . $jsonData['receiverName'];

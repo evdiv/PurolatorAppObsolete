@@ -52,7 +52,7 @@ class Origin {
 									LIMIT 1");
 
 		if($result) {
-			$row = $relult->fetch_assoc($result);
+			$row = $result->fetch_assoc();
 
 			$location['Id'] = $row['LocationsID'];
 			$location['Name'] = COMPANY_NAME;
@@ -91,7 +91,7 @@ class Origin {
 									LIMIT 1");
 
 		if($result) {
-			$row = $result->fetch_assoc($result);
+			$row = $result->fetch_assoc();
 
 			$location['Id'] = $row['LocationsID'];
 			$location['Name'] = COMPANY_NAME;

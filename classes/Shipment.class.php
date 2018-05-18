@@ -23,8 +23,8 @@ class Shipment {
 		$this->incomingData = $incomingData;
 		$this->client = $this->createPWSSOAPClient();
 
-		$this->request = new stdClass();
-		$this->response = new stdClass();
+		$this->request = new \stdClass();
+		$this->response = new \stdClass();
 	}
 
 
@@ -272,7 +272,7 @@ class Shipment {
 
 	private function createPWSSOAPClient() {
 
-  		$client = new SoapClient( "./wsdl/ShippingService.wsdl", 
+  		$client = new \SoapClient( "./wsdl/ShippingService.wsdl", 
   								array	(
                                     'trace'		=>	true,
                                     'location'	=>	APP_PUROLATOR_SHIPMENT_URL,
@@ -282,7 +282,7 @@ class Shipment {
                                 )
                         	);
 
-	  	$headers[] = new SoapHeader ( 'http://purolator.com/pws/datatypes/v1', 
+	  	$headers[] = new \SoapHeader ( 'http://purolator.com/pws/datatypes/v1', 
 	                                'RequestContext', 
                                 array (
                                         'Version'    =>  '1.6',

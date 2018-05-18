@@ -20,10 +20,10 @@ class ReturnShipment {
         $this->db = new Database();
 
         $this->incomingData = $incomingData;
-        $this->client = $this->createPWSSOAPClient(); 
+        $this->client = $this->createPWSSOAPClient();
         
-        $this->request = new stdClass();
-        $this->response = new stdClass();
+        $this->request = new \stdClass();
+        $this->response = new \stdClass();
     }
 
 
@@ -87,7 +87,7 @@ class ReturnShipment {
 
 	private function createPWSSOAPClient() {
 
-  		$client = new SoapClient( "./wsdl/ReturnsManagementService.wsdl", 
+  		$client = new \SoapClient( "./wsdl/ReturnsManagementService.wsdl", 
 			array	(
                 'trace'		=>	true,
                 'location'	=>	APP_PUROLATOR_RETURN_SHIPMENT_URL,
@@ -97,7 +97,7 @@ class ReturnShipment {
             )
         );
 
-	  	$headers[] = new SoapHeader ( 'http://purolator.com/pws/datatypes/v2',
+	  	$headers[] = new \SoapHeader ( 'http://purolator.com/pws/datatypes/v2',
 	        'RequestContext', 
                 array (
                     'Version'           =>  '2.0',
