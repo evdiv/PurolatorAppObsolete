@@ -1,9 +1,5 @@
 config.php
-
-# Local vendors .js .css #
-###################
-js/vendors/*.*
-css/vendors/*.*
+node_modules/*.*
 
 # Compiled source #
 ###################

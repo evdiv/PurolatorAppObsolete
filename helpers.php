@@ -1,9 +1,22 @@
 <?php 
 
-require_once "/home/sites/landm/html/functions/_settings.php";
-
-
 //Functions ////////////////////////////////////////////////////
+
+
+//Define autoloader 
+function __autoload($className) { 
+	$filePath = './classes/' . $className . '.class.php';
+
+	require_once $filePath; 
+
+    // if (file_exists($filePath)) { 
+    //     require_once $filePath; 
+    //     return true; 
+    // } 
+
+    // return false; 
+} 
+
 
 function redirectIfGuest() {
 	// if(empty($_SESSION['AdminID'])) {
@@ -13,20 +26,39 @@ function redirectIfGuest() {
 }
 
 
-function ForceIncomingString($name, $default = "") {
+function getFromRequest($name) {
 
-	$value = !empty($_GET[$name]) ? $_GET[$name] : $default;
+	$value = !empty($_GET[$name]) ? $_GET[$name] : '';
 
-	// If the default value was defined, then check the post variables
-	if ($value == $default) {
-		$value = !empty($_POST[$name]) ? $_POST[$name] : $default;
+	if (empty($value)) {
+		$value = !empty($_POST[$name]) ? $_POST[$name] : '';
 	}
+
+	return $value;
+}
+
+
+function getIncomingString($name, $default = "") {
+
+	$value = getFromRequest($name);
 
 	if(!is_string($value) || empty(trim($value))) {
 		return $default;
 	}
 
 	return htmlspecialchars($value, ENT_QUOTES);
+}
+
+
+function getIncomingInt($name, $default = 0) {
+
+	$value = getFromRequest($name);
+
+	if (!is_numeric($value) || empty($value)) {
+		return $default;
+	}
+
+	return (int)$value;	
 }
 
 
@@ -76,6 +108,24 @@ function getStreetName($address) {
 
 	return implode(' ', $addressArray);
 }
+
+
+function splitAddress($name, $prefix = '') {
+	$pos = strpos(trim($name), ' ', 15);
+
+	if ($pos === false) {
+		return array(
+		 	$prefix . '0' => $name,
+		 	$prefix . '1' => null
+		);
+	}
+
+	return array(
+		$prefix . '0' => substr($name, 0, $pos + 1),
+		$prefix . '1' => substr($name, $pos)
+	);
+}
+
 
 
 function getAdditionalAddressLine($address) {

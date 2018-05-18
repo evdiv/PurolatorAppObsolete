@@ -41,7 +41,7 @@ class Customer {
 			
 				if(strlen(trim($AddressTemp)) > 30){
 
-					$AddressArray = \Common::split_address($AddressTemp);
+					$AddressArray = splitAddress($AddressTemp);
 					$Address2 = $AddressArray[0];
 					$Address3 = $AddressArray[1];
 
@@ -56,8 +56,7 @@ class Customer {
 
 	        $customer['City'] = ucfirst(str_replace(","," ",$row['HomeCity']));
 
-	        $Provinces = new \Provinces;
-	        $customer['ProvinceCode'] =  $Provinces->GetProvinceCodeByAccountsID($row['AccountsID']);
+	        $customer['ProvinceCode'] =  (new Locations)->GetProvinceCodeByAccountsID($row['AccountsID']);
 
 	        $customer['PostalCode'] = getPostalCode($row['PostalCode']);
 	        $customer['Country'] = "CA"; 

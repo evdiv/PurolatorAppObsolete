@@ -1,12 +1,9 @@
 <?php
 
-//get all configuration
-require_once "/home/sites/landm/html/functions/_settings.php";
 require_once "./config.php";
 
 
 redirectIfGuest();
-
 
 //Incoming Parameters 
 $jsonData 	= getIncomingJson();
@@ -224,10 +221,10 @@ if($jsonData['action'] == "getLocations") {
 //***************************************************
 // Get All Shipments by selected Date from DB
 
-} elseif($jsonData['action'] == "getShipmentsByDate") {
+} elseif($jsonData['action'] == "getShipmentsByDate" || getIncomingString('action') == 'getShipmentsByDate') {
 
 	$date = (empty($jsonData['date']) || $jsonData['date'] === "Invalid date") ? date('Y-m-d') : $jsonData['date'];
-	$Shipment = new Purolator\Shipment();
+	$Shipment = new Shipment();
 
 	echo json_encode(array(
 						'shipments' => $Shipment->getByDate($date), 
@@ -255,7 +252,7 @@ if($jsonData['action'] == "getLocations") {
 
 
 //***************************************************
-// Send Email to Customer
+// Send Return Shipping Labes to Customer
 
 } elseif($jsonData['action'] == "sendEmail") {
 
@@ -265,16 +262,12 @@ if($jsonData['action'] == "getLocations") {
 
 
     $SendMail = new SendMail;
-    $SendMail->SenderName  = SITE_NAME;
-    $SendMail->SenderEmail = ORDER_CONTACT;
+    $SendMail->SenderName  = COMPANY_NAME;
+    $SendMail->SenderEmail = ADMIN_EMAIL;
     $SendMail->Subject = "Return Shipment Label - " . $jsonData['receiverName'];
     $SendMail->Body = $jsonData['receiverEmailBody'];
 
     $SendMail->AddAttachments("./labels/" . $jsonData['pins'][0] . ".pdf");
-
-    //$SendMail->AddRecipients('edvoir@long-mcquade.com', 'edvoir@long-mcquade.com');
-
-    $SendMail->AddRecipients(ORDER_BCC_EMAIL, ORDER_BCC_EMAIL);
     $SendMail->AddRecipients($jsonData['receiverEmail'], $jsonData['receiverEmail']);
 
     $emailSent = $SendMail->Send();  

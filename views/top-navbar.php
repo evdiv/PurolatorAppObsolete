@@ -2,8 +2,7 @@
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container">
 
-			<a class="navbar-brand" href="//<?= APP_URL ?>" target="_blank">
-				<img src="//<?= APP_URL ?>/images/logo.png" height="24px"></a>
+			<a class="navbar-brand" href="/" target="_blank">YOUR LOGO</a> 
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			    <span class="navbar-toggler-icon"></span></button>
@@ -12,7 +11,7 @@
 			    <ul class="navbar-nav mr-auto">
 				    <li class="nav-item active">
 				        <a class="nav-link" href="https://ship.purolator.com/" target="_blank">
-							<img src="//<?= APP_URL ?>/images/logo-purolator-sm.png" height="24px">
+							<img src="images/logo-purolator-sm.png" height="24px">
 				        </a> 
 				    </li>
 

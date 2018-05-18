@@ -7,7 +7,9 @@
 define("APP_NAME", "Your Company Purolator web client");
 define("APP_URL", "/purolator");
 define("COMPANY_NAME", "Company Name");
+define("ADMIN_EMAIL", "admin@yourdomain.com");
 define("DEFAULT_LOCATION_ID", "1");
+
 
 
 //************************************
@@ -37,18 +39,8 @@ define("APP_PUROLATOR_RETURN_SHIPMENT_URL", "https://webservices.purolator.com/E
 
 
 
-
 //****************************************
-// Require Classes and helper functions
-
-require_once "./classes/Database.class.php";
-
-require_once "./classes/Estimate.class.php";
-require_once "./classes/Document.class.php";
-require_once "./classes/Shipment.class.php";
-require_once "./classes/ReturnShipment.class.php";
-require_once "./classes/Origin.class.php";
-require_once "./classes/Customer.class.php";
+// Require helper functions
 
 require_once "./helpers.php"; 
 
