@@ -1,0 +1,97 @@
+<?php
+
+require_once "./config.php";
+
+
+$db = new Purolator\Database();
+
+$db->query("CREATE TABLE Admin (
+							AdminID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							Username VARCHAR(150) NOT NULL,
+							Password VARCHAR(150) NOT NULL,
+							Email VARCHAR(100) NOT NULL,
+							LocationsID INT(5)  NULL DEFAULT NULL,
+							ShippingAccess INT(1)  NULL DEFAULT NULL,
+							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+
+$db->query("CREATE TABLE ProductsBoxes (
+							ProductsBoxesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							Description VARCHAR(250) NULL DEFAULT NULL,
+							WeightLimit NUMERIC(10,2)  NULL DEFAULT NULL,
+							BoxWeight NUMERIC(10,2)  NULL DEFAULT NULL,
+							Length NUMERIC(10,2)  NULL DEFAULT NULL,
+							Width NUMERIC(10,2)  NULL DEFAULT NULL,
+							Height NUMERIC(10,2)  NULL DEFAULT NULL)"
+						);
+
+
+$db->query("CREATE TABLE TrackingInfo (
+							TrackingInfoID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							OrderID INT(11)  NOT NULL,
+							AdminID INT(11)  NOT NULL, 
+							TrackingCarrierID VARCHAR(250) NULL DEFAULT NULL,
+							TrackingCode VARCHAR(250) NULL DEFAULT NULL,
+							LocationCode VARCHAR(10) NULL DEFAULT NULL,
+							CourierService VARCHAR(100) NULL DEFAULT NULL,
+							Status INT(1)  NULL DEFAULT NULL,
+							Void INT(1)  NULL DEFAULT NULL,
+							Length NUMERIC(10,2)  NULL DEFAULT NULL,
+							Width NUMERIC(10,2)  NULL DEFAULT NULL,
+							Height NUMERIC(10,2)  NULL DEFAULT NULL,
+							Weight NUMERIC(10,2)  NULL DEFAULT NULL,
+							Reference VARCHAR(250) NULL DEFAULT NULL,
+							Note VARCHAR(512) NULL DEFAULT NULL,
+							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+
+$db->query("CREATE TABLE TrackingReturnsInfo (
+							TrackingReturnsInfoID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							OrderID INT(11)  NOT NULL,
+							AdminID INT(11)  NOT NULL, 
+							TrackingCarrierID VARCHAR(250) NULL DEFAULT NULL,
+							TrackingCode VARCHAR(250) NULL DEFAULT NULL,
+							LocationCode VARCHAR(10) NULL DEFAULT NULL,
+							CourierService VARCHAR(100) NULL DEFAULT NULL,
+							Length NUMERIC(10,2)  NULL DEFAULT NULL,
+							Width NUMERIC(10,2)  NULL DEFAULT NULL,
+							Height NUMERIC(10,2)  NULL DEFAULT NULL,
+							Weight NUMERIC(10,2)  NULL DEFAULT NULL,
+							Reference VARCHAR(250) NULL DEFAULT NULL,
+							Note VARCHAR(512) NULL DEFAULT NULL,
+							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+
+$db->query("CREATE TABLE OrdersNotes (
+							OrderNotesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							OrderID INT(11)  NOT NULL,
+							AdminID INT(11)  NOT NULL, 
+							Note VARCHAR(512) NULL DEFAULT NULL,
+							NoteDate TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+
+$db->query("CREATE TABLE Locations (
+							LocationsID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							City VARCHAR(250) NULL DEFAULT NULL,
+							ProvincesID INT(11)  NOT NULL,
+							Phone VARCHAR(50) NULL DEFAULT NULL,
+							Fax VARCHAR(50) NULL DEFAULT NULL,
+							Email VARCHAR(100) NULL DEFAULT NULL,
+							SteetAddress VARCHAR(255) NULL DEFAULT NULL,
+							PostalCode VARCHAR(255) NULL DEFAULT NULL,
+							Active INT(1)  NULL DEFAULT NULL,
+							LocationCode VARCHAR(10) NULL DEFAULT NULL,
+							Note VARCHAR(512) NULL DEFAULT NULL,
+							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+
+$db->query("CREATE TABLE Provinces (
+							ProvincesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							ProvinceName VARCHAR(100) NULL DEFAULT NULL,
+							ProvinceCode VARCHAR(2) NULL DEFAULT NULL)"
+						);
