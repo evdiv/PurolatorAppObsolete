@@ -18,7 +18,6 @@ $db->query( "INSERT INTO Admin (Username, Email, LocationsID, ShippingAccess) VA
 $db->query( "INSERT INTO Admin (Username, Email, LocationsID, ShippingAccess) VALUES ('Ken', 'ken@yourdomain.com', '1', '1'");        
 
 
-
 $db->query("CREATE TABLE ProductsBoxes (
 							ProductsBoxesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 							Description VARCHAR(250) NULL DEFAULT NULL,
@@ -99,6 +98,7 @@ $db->query("CREATE TABLE Locations (
 							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
 						);
 
+
 $db->query( "INSERT INTO Locations (City, ProvincesID, Phone, Email, SteetAddress, PostalCode) 
 	VALUES ('Toronto', '1', '416-999-99-99', 'toronto@yourdomain.com', '120 Torresdale Avenue', 'M2R3N7'");   
 $db->query( "INSERT INTO Locations (City, ProvincesID, Phone, Email, SteetAddress, PostalCode) 
@@ -115,6 +115,7 @@ $db->query("CREATE TABLE Provinces (
 							ProvinceName VARCHAR(100) NULL DEFAULT NULL,
 							ProvinceCode VARCHAR(2) NULL DEFAULT NULL)"
 						);
+
 
 $db->query( "INSERT INTO Provinces (ProvinceName, ProvinceCode) VALUES ('Ontario', 'ON'");
 $db->query( "INSERT INTO Provinces (ProvinceName, ProvinceCode) VALUES ('Manitoba', 'MB'");
