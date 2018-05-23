@@ -17,6 +17,26 @@ $db->query("CREATE TABLE Admin (
 $db->query( "INSERT INTO Admin (Username, Email, LocationsID, ShippingAccess) VALUES ('John', 'john@yourdomain.com', '1', '1'");
 $db->query( "INSERT INTO Admin (Username, Email, LocationsID, ShippingAccess) VALUES ('Ken', 'ken@yourdomain.com', '1', '1'");        
 
+$db->query("CREATE TABLE Accounts (
+							AccountsID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							FirstName VARCHAR(150) NOT NULL,
+							LastName VARCHAR(150) NOT NULL,
+							Apt VARCHAR(150) NULL DEFAULT NULL,
+							HomeAddress VARCHAR(255) NOT NULL,
+							HomeCity VARCHAR(255) NOT NULL,
+							ProvincesID INT(11)  NOT NULL,
+							PostalCode VARCHAR(255) NOT NULL,
+							Email VARCHAR(255) NOT NULL,
+							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+$db->query( "INSERT INTO Accounts (FirstName, LastName, Apt, HomeAddress, HomeCity, ProvincesID, PostalCode, Email) 
+	VALUES ('John', 'Scott', 32, '2 Camborne Crt.', 'Markham', 1, 'L3R7S3', 'johnscott@youdomain.com'");  
+$db->query( "INSERT INTO Accounts (FirstName, LastName, Apt, HomeAddress, HomeCity, ProvincesID, PostalCode, Email) 
+	VALUES ('Don', 'Wilson', 4, '59 Bell Farm Rd.', 'Barrie', 1, 'L4M5G1', 'donwilson@youdomain.com'");  
+$db->query( "INSERT INTO Accounts (FirstName, LastName, Apt, HomeAddress, HomeCity, ProvincesID, PostalCode, Email) 
+	VALUES ('Monica', 'Banman', 711, '3873 Harold Crescent', 'Sudbury', 1, 'P3N1J2', 'monicabanman@youdomain.com'");  
+
 
 $db->query("CREATE TABLE ProductsBoxes (
 							ProductsBoxesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -74,6 +94,19 @@ $db->query("CREATE TABLE TrackingReturnsInfo (
 							DateAdded TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
 						);
 
+$db->query("CREATE TABLE Orders (
+							OrdersID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+							AccountsID INT(11)  NOT NULL,
+							OrderDate TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP)"
+						);
+
+$db->query( "INSERT INTO Orders (AccountsID) VALUES ('1'");  
+$db->query( "INSERT INTO Orders (AccountsID) VALUES ('2'");    
+$db->query( "INSERT INTO Orders (AccountsID) VALUES ('1'");   
+$db->query( "INSERT INTO Orders (AccountsID) VALUES ('1'");   
+$db->query( "INSERT INTO Orders (AccountsID) VALUES ('2'");   
+
+
 
 $db->query("CREATE TABLE OrdersNotes (
 							OrderNotesID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -86,7 +119,7 @@ $db->query("CREATE TABLE OrdersNotes (
 
 $db->query("CREATE TABLE Locations (
 							LocationsID INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-							City VARCHAR(250) NULL DEFAULT NULL,
+							City VARCHAR(255) NULL DEFAULT NULL,
 							ProvincesID INT(11)  NOT NULL,
 							Phone VARCHAR(50) NULL DEFAULT NULL,
 							Fax VARCHAR(50) NULL DEFAULT NULL,
