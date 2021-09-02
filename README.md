@@ -1,5 +1,8 @@
 # purolatorShippingApp
 
+This script is obsolete, here is the new one:
+https://github.com/evdiv/PurolatorShippingApp
+
 Purolator Shipping App.
 It has been created using PHP and Vue.js
 
